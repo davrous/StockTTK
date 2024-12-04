@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Twelve Data Time Series API
+  description: >-
+    API for retrieving historical time series data for financial instruments
+    with optional filters like `start_date`, `end_date`, and `outputsize`.
+  version: 1.0.0
+servers:
+  - url: https://api.twelvedata.com
+paths:
+  /time_series:
+    get:
+      summary: Retrieve historical time series data
+      description: >
+        Retrieves historical time series data for a specified financial
+        instrument.  The `start_date` and `end_date` parameters can be used to
+        define boundaries for the data.  The maximum number of data points in
+        one request is 5000.
+      parameters:
+        - name: symbol
+          in: query
+          required: true
+          description: The symbol of the financial instrument (e.g., AAPL for Apple Inc.).
+          schema:
+            type: string
+        - name: interval
+          in: query
+          required: true
+          description: The time interval between data points (e.g., 1day, 1min).
+          schema:
+            type: string
+        - name: start_date
+          in: query
+          required: false
+          description: >
+            The start date of the time series data in ISO format (YYYY-MM-DD). 
+            Must be greater than `outputsize` if used alone.
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          required: false
+          description: >
+            The end date of the time series data in ISO format (YYYY-MM-DD). 
+            Defines the upper limit of the data range.
+          schema:
+            type: string
+            format: date
+        - name: outputsize
+          in: query
+          required: false
+          description: >
+            The number of data points to return.  Defaults to 30 if not
+            specified. Maximum value is 5000.
+          schema:
+            type: integer
+        - name: apikey
+          in: query
+          required: true
+          description: Your API key for authentication.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response with the time series data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    description: Metadata about the request and time series.
+                  values:
+                    type: array
+                    description: The list of time series data points.
+                    items:
+                      type: object
+                      properties:
+                        datetime:
+                          type: string
+                          format: date-time
+                          description: The timestamp of the data point.
+                        open:
+                          type: number
+                          description: The opening price.
+                        high:
+                          type: number
+                          description: The highest price.
+                        low:
+                          type: number
+                          description: The lowest price.
+                        close:
+                          type: number
+                          description: The closing price.
+                        volume:
+                          type: integer
+                          description: The traded volume.
+        '400':
+          description: Bad request due to invalid parameters.
+        '401':
+          description: Unauthorized, invalid API key.
+        '500':
+          description: Internal server error.
+      operationId: getTimeSeries

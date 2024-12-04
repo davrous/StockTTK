@@ -1,0 +1,28 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.2/schema.json",
+    "version": "v1.2",
+    "name": "StockTTK",
+    "description": "Retrieve the value of a stock at a specific time",
+    "instructions": "$[file('instruction.txt')]",
+    "actions": [
+        {
+            "id": "action_1",
+            "file": "ai-plugin.json"
+        }
+    ],
+    "conversation_starters": [
+        {
+            "title": "Show the NVidia stock",
+            "text": "Show me the NVDA values in the 7 last days"
+        },
+        {           
+            "title": "Get the Microsoft stock", 
+            "text": "Show the MSFT values in the last 2 weeks"
+        }
+    ],
+    "capabilities": [
+        {
+          "name": "CodeInterpreter"
+        }
+      ]
+}

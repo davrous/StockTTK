@@ -1,0 +1,46 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.2/schema.json",
+    "schema_version": "v2.2",
+    "name_for_human": "StockTTK",
+    "description_for_human": "API for retrieving historical time series data for financial instruments with optional filters like `start_date`, `end_date`, and `outputsize`.",
+    "namespace": "stockttk",
+    "functions": [
+        {
+            "name": "getTimeSeries",
+            "description": "Retrieves historical time series data for a specified financial instrument.  The `start_date` and `end_date",
+            "capabilities": {
+                "response_semantics": {
+                    "data_path": "$",
+                    "properties": {
+                        "title": "$.datetime",
+                        "subtitle": "$.close"
+                    }
+                }
+            }
+        }
+    ],
+    "runtimes": [
+        {
+            "type": "OpenApi",
+            "auth": {
+                "type": "None"
+            },
+            "spec": {
+                "url": "apiSpecificationFile/openapi.yaml"
+            },
+            "run_for_functions": [
+                "getTimeSeries"
+            ]
+        }
+    ],
+    "capabilities": {
+        "conversation_starters": [
+            {
+                "text": "Retrieve historical time series data for AAPL"
+            },
+            {
+                "text": "Draw a graph of the value of the MSFT stock in the last 2 weeks"
+            }
+        ]
+    }
+}
